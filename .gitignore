@@ -1,0 +1,36 @@
+# Archivos temporales de Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Checkpoints y resultados
+data/checkpoints/
+results/
+
+# Logs
+*.log
+
+# Archivos temporales o copias
+* copy.py
+
+# Archivos generados por experimentos
+*.pdf
+*.csv
+*.tex
+*.md
+
+
+# Modelos y checkpoints pesados
+*.h5
+*.hdf5
+data/checkpoints/
+results/**/checkpoints/
