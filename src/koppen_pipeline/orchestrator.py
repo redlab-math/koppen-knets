@@ -2,6 +2,7 @@
 Pipeline orchestration
 """
 
+import sys
 import h5py
 from pathlib import Path
 import time
@@ -69,9 +70,12 @@ def run_complete_pipeline(config: KSTConfig,
             check_resources(config)
         except RuntimeError as e:
             warnings.warn(str(e))
-            response = input("\nContinue anyway? (y/n): ")
-            if response.lower() != 'y':
-                raise
+            if sys.stdin is not None and sys.stdin.isatty():
+                response = input("\nContinue anyway? (y/n): ")
+                if response.lower() != 'y':
+                    raise
+            else:
+                warnings.warn("Non-interactive environment: continuing despite resource warning.")
     
     # Results tracking
     results = {
@@ -158,7 +162,9 @@ def run_complete_pipeline(config: KSTConfig,
             for claim_num, result in verification_results.items():
                 if isinstance(claim_num, int):
                     claim_grp = verify_grp.create_group(f'claim_{claim_num}')
-                    claim_grp.attrs['passed'] = result.passed
+                    status = 'skipped' if result.passed is None else ('passed' if result.passed else 'failed')
+                    claim_grp.attrs['passed'] = bool(result.passed) if result.passed is not None else False
+                    claim_grp.attrs['status'] = status
                     claim_grp.attrs['name'] = result.name
                     for key, val in result.details.items():
                         if isinstance(val, (int, float, bool, str)):

@@ -15,7 +15,7 @@ Además de las métricas tradicionales de desempeño (R², RMSE, MAE)
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import argparse
 import logging
@@ -247,7 +247,7 @@ def train_pytorch_model(model: nn.Module, X_train, y_train, X_val, y_val, args, 
     else:
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=1e-5)
     
-    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=args.patience // 2, factor=0.5, verbose=False)
+    scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=args.patience // 2, factor=0.5)
     loss_fn = nn.MSELoss()
     
     best_val_loss = float('inf')

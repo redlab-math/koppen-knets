@@ -175,8 +175,8 @@ def track_gradient_stability(grad_norms: List[float]) -> Dict[str, float]:
     """
     if not grad_norms or len(grad_norms) < 2:
         return {
-            'gradient_cv': np.nan,
-            'gradient_trend': np.nan,
+            'cv': np.nan,
+            'trend_slope': np.nan,
             'vanishing_ratio': np.nan
         }
     
@@ -185,8 +185,8 @@ def track_gradient_stability(grad_norms: List[float]) -> Dict[str, float]:
     
     if len(grad_norms) < 2:
         return {
-            'gradient_cv': np.nan,
-            'gradient_trend': np.nan,
+            'cv': np.nan,
+            'trend_slope': np.nan,
             'vanishing_ratio': np.nan
         }
     

@@ -557,7 +557,7 @@ def train_model(
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=1e-4)
     
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode='min', factor=0.5, patience=20, verbose=False
+        optimizer, mode='min', factor=0.5, patience=20
     )
     
     criterion = nn.MSELoss()

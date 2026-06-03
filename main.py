@@ -160,6 +160,29 @@ def run_ablation_phase(args, checkpoint_path, logger):
     return str(results_csv)
 
 
+def run_figures_phase(args, checkpoint_path, logger):
+    logger.info("=" * 80)
+    logger.info("PHASE: INTERNAL-FUNCTION FIGURES")
+    logger.info("=" * 80)
+
+    import matplotlib
+    matplotlib.use("Agg")
+    from koppen_viz.figures import (
+        create_comprehensive_report,
+        plot_figure_5_4_comparison,
+    )
+
+    fig_dir = Path(args.output) / 'figures'
+    fig_dir.mkdir(parents=True, exist_ok=True)
+    cp = Path(checkpoint_path)
+
+    create_comprehensive_report(cp, fig_dir / 'comprehensive_report.png')
+    plot_figure_5_4_comparison(cp, fig_dir / 'holder_vs_lipschitz.png')
+
+    logger.info(f"Figures saved to: {fig_dir}")
+    return str(fig_dir)
+
+
 def main():
     args = parse_args()
     
@@ -196,6 +219,9 @@ def main():
         
         if (args.benchmark or args.ablation or args.all) and not checkpoint_path:
             raise ValueError("Benchmark/ablation require --checkpoint_file or --checkpoint/--all")
+        
+        if checkpoint_path and not args.no_plots:
+            run_figures_phase(args, checkpoint_path, logger)
         
         if args.benchmark or args.all:
             run_benchmark_phase(args, checkpoint_path, logger)

@@ -13,7 +13,7 @@ class VerificationResult:
     def __init__(self, claim_num: int, name: str, passed: bool, details: Dict):
         self.claim_num, self.name, self.passed, self.details = claim_num, name, passed, details
     def __repr__(self):
-        status = "✓ PASS" if self.passed else "✗ FAIL"
+        status = "⊘ SKIPPED" if self.passed is None else ("✓ PASS" if self.passed else "✗ FAIL")
         return f"Claim {self.claim_num} ({self.name}): {status}"
 
 def _get_path(base_name: str) -> str:
@@ -91,10 +91,10 @@ def verify_claim_20_lipschitz(h5file: h5py.File, L_theoretical: float) -> Verifi
     return VerificationResult(20, "Lipschitz", passed, details)
 
 def verify_claim_18_all_but_one(h5file: h5py.File, config: KSTConfig, n_test_points: int = 1000) -> VerificationResult:
-    return VerificationResult(18, "All But One", True, {'note': 'Test skipped for brevity'})
+    return VerificationResult(18, "All But One", None, {'note': 'NOT IMPLEMENTED - not verified'})
 
 def verify_claim_21_disjoint_image(h5file: h5py.File, config: KSTConfig, n_test_squares: int = 100) -> VerificationResult:
-    return VerificationResult(21, "Disjoint Image", True, {'note': 'Test skipped for brevity'})
+    return VerificationResult(21, "Disjoint Image", None, {'note': 'NOT IMPLEMENTED - not verified'})
 
 def run_full_verification(h5file: h5py.File, config: KSTConfig, L_theoretical: float) -> Dict:
     """Run complete verification suite."""
@@ -111,4 +111,3 @@ def run_full_verification(h5file: h5py.File, config: KSTConfig, L_theoretical: f
     for res in results.values(): print(f"  {res}")
     print("="*70 + "\n")
     return results
-
