@@ -10,7 +10,7 @@ A single command reproduces the artifacts reported in the paper: the precomputed
 
 The architecture, referred to as `K-Net-Complete` in the paper, is the `KSTSprecherLorentzModel` defined in `src/knet_core/kst_sl_model.py`. It realizes the Sprecher-Lorentz form of the Kolmogorov-Arnold representation theorem,
 
-$$ f(x) = \sum_{q=0}^{2n} \Phi\!\left( \sum_{p=1}^{n} \lambda_{qp}\, \psi(x_p + q\varepsilon) \right), $$
+$$ f(x) = \sum_{q=0}^{2n} \Phi\\left( \sum_{p=1}^{n} \lambda_{qp}\, \psi(x_p + q\varepsilon) \right), $$
 
 with three components. The inner function $\psi$ is fixed and precomputed: it is the Lipschitz-continuous function obtained by arc-length reparametrization of the Köppen function following Actor (2018), stored as an HDF5 checkpoint and evaluated by `KSTProjector` (`src/knet_core/kst_projector.py`) through a left-step lookup with periodic extension. The scale coefficients $\Lambda \in \mathbb{R}^{Q \times n}$, with $Q = 2n+1$, are trainable. The outer network $\Phi$ is a shared univariate MLP applied independently to each projection $Z_q$.
 
